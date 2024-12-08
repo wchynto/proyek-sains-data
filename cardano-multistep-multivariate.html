@@ -1,0 +1,1940 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Proyek 3 : Prediksi Harga Mata Uang Kripto Cardano (ADA) dengan Multivariate dan LSTM &#8212; Proyek Sains Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cardano-multistep-multivariate';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Proyek 2 : Prediksi Harga Saham BCA (BBCA) debngan Multivariate" href="harga-saham-multivariate.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Proyek Sains Data - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Proyek Sains Data - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Selamat Datang
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="harga-saham-univariate.html">Proyek 1 : Prediksi Harga Saham BCA (BBCA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harga-saham-multivariate.html">Proyek 2 : Prediksi Harga Saham BCA (BBCA) debngan Multivariate</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Proyek 3 :  Prediksi Harga Mata Uang Kripto Cardano (ADA) dengan Multivariate dan LSTM</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fcardano-multistep-multivariate.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cardano-multistep-multivariate.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Proyek 3 :  Prediksi Harga Mata Uang Kripto Cardano (ADA) dengan Multivariate dan LSTM</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pendahuluan">Pendahuluan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang">Latar Belakang</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan">Tujuan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rumusan-masalah">Rumusan Masalah</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-library">Import Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-exsploratory-data-analysis">EDA (Exsploratory Data Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#informasi-data">Informasi Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tranformasi-data">Tranformasi Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribusi-data">Distribusi Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#histogram">Histogram</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#box-plot">Box Plot</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatter-plot">Scatter Plot</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antar-fitur">Korelasi Antar Fitur</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pre-processing">Data Pre-Processing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleksi-fitur">Seleksi Fitur</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalisasi-min-max">Normalisasi Min-Max</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier">Deteksi Outlier</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#metode-local-outlier-factor-lof">Metode Local Outlier Factor (LOF)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#metode-box-plot-interquartile">Metode Box Plot (Interquartile)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="proyek-3-prediksi-harga-mata-uang-kripto-cardano-ada-dengan-multivariate-dan-lstm">
+<h1>Proyek 3 :  Prediksi Harga Mata Uang Kripto Cardano (ADA) dengan Multivariate dan LSTM<a class="headerlink" href="#proyek-3-prediksi-harga-mata-uang-kripto-cardano-ada-dengan-multivariate-dan-lstm" title="Link to this heading">#</a></h1>
+<section id="pendahuluan">
+<h2>Pendahuluan<a class="headerlink" href="#pendahuluan" title="Link to this heading">#</a></h2>
+<section id="latar-belakang">
+<h3>Latar Belakang<a class="headerlink" href="#latar-belakang" title="Link to this heading">#</a></h3>
+<p>Broker atau bisa disebut juga perantara dalam transaksi keuangan untuk membantu klien dalam proses menjual dan membeli aset seperti saham, obligasi, komoditas, mata uang, dan instrumen keuangan lainnya. Kasus ini terdapat sebuah perusahaan broker yang bernama PT Investasi Jaya merupakan broker-dealer yang memiliki peran ganda dalam pasar saham :</p>
+<ul class="simple">
+<li><p>Sebagai <strong>broker</strong>, perusahaan ini bertindak sebagai perantara antara pembantu antara klien untuk melakukan jual beli saham dan mendapat komisi atas kegiatan tersebut.</p></li>
+<li><p>Sebagai <strong>dealer</strong>, perusahaan melakukan pembelian saham dalam jumlah besar dan menjual saham pada harga yang melebihi harga beli untuk kepentingan perusahaan sendiri.</p></li>
+</ul>
+<p>Sebagai dealer, perusahaan memerlukan analisis harga saham yang sangat akurat untuk bisa melakukan prediksi dengan menganalisa pola harga saham pada waktu lampau untuk bisa membuat analisis prediksi terkait kenaikan dan penurunan harga saham. Sehingga, jika perusahaan mampu memprediksi harga saham, perusahaan mampu untuk membuat keputusan untuk membeli ataupun menjual saham dalam jumlah banyak untuk mencapai keuntungan sebesar-besarnya. Tantangan yang dihadapi perusahaan ini adalah belum ada alat yang bisa melakukan prediksi harga saham yang cukup akurat dan perusahaan melakukan analisis harga saham secara manual yang cukup merepotkan dan memakan waktu lama.</p>
+</section>
+<section id="tujuan">
+<h3>Tujuan<a class="headerlink" href="#tujuan" title="Link to this heading">#</a></h3>
+<p>Proposal ini bertujuan untuk mengimplementasikan proyek sains data yang fokus pada :</p>
+<ol class="arabic simple">
+<li><p>Membangun model machine learning yang efektif untuk memprediksi kenaikan harga saham.</p></li>
+<li><p>Menganalisa pola kenaikan dan penerunan harga saham untuk mengevaluasi teknik pembelian dan penjualan saham oleh perusahaan.</p></li>
+</ol>
+</section>
+<section id="rumusan-masalah">
+<h3>Rumusan Masalah<a class="headerlink" href="#rumusan-masalah" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Bagaimana menganalisa pola kenaikan dan penurunan harga saham?</p></li>
+<li><p>Bagaimana membangun model machine learning untuk memprediksi kenaikan dan penurunan harga saham dengan akurat?</p></li>
+</ol>
+</section>
+</section>
+<section id="import-library">
+<h2>Import Library<a class="headerlink" href="#import-library" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">LocalOutlierFactor</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-08 23:38:28.595725: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-08 23:38:28.596817: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+2024-12-08 23:38:28.599197: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+2024-12-08 23:38:28.610093: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1733675908.622415  139196 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1733675908.626003  139196 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-08 23:38:28.646877: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="eda-exsploratory-data-analysis">
+<h2>EDA (Exsploratory Data Analysis)<a class="headerlink" href="#eda-exsploratory-data-analysis" title="Link to this heading">#</a></h2>
+<section id="load-data">
+<h3>Load Data<a class="headerlink" href="#load-data" title="Link to this heading">#</a></h3>
+<p>Data didapatkan dari situs web <a class="reference external" href="https://www.investing.com">https://www.investing.com</a> dengan interval harian dari tahun 2020 sampai 2024.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./dataset/HistoricalCardano.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./dataset/HistoricalCardano.csv&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py:1026,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1013</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1014</span>     <span class="n">dialect</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1015</span>     <span class="n">delimiter</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1022</span>     <span class="n">dtype_backend</span><span class="o">=</span><span class="n">dtype_backend</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1023</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1024</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1026</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py:620,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">617</span> <span class="n">_validate_names</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">619</span> <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">620</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">622</span> <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">623</span>     <span class="k">return</span> <span class="n">parser</span>
+
+<span class="nn">File ~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py:1620,</span> in <span class="ni">TextFileReader.__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1617</span>     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1619</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1620</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py:1880,</span> in <span class="ni">TextFileReader._make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1878</span>     <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1879</span>         <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1880</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1881</span>     <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1882</span>     <span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1883</span>     <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1884</span>     <span class="n">compression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1885</span>     <span class="n">memory_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1886</span>     <span class="n">is_text</span><span class="o">=</span><span class="n">is_text</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1887</span>     <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding_errors&quot;</span><span class="p">,</span> <span class="s2">&quot;strict&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1888</span>     <span class="n">storage_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1889</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1890</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1891</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">handle</span>
+
+<span class="nn">File ~/.local/lib/python3.9/site-packages/pandas/io/common.py:873,</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">868</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">869</span>     <span class="c1"># Check whether the filename is to be opened in binary mode.</span>
+<span class="g g-Whitespace">    </span><span class="mi">870</span>     <span class="c1"># Binary mode does not support &#39;encoding&#39; and &#39;newline&#39;.</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span>     <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">872</span>         <span class="c1"># Encoding</span>
+<span class="ne">--&gt; </span><span class="mi">873</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">874</span>             <span class="n">handle</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span>             <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">876</span>             <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>             <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>         <span class="c1"># Binary mode</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;./dataset/HistoricalCardano.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Tanggal</th>
+      <th>Terakhir</th>
+      <th>Pembukaan</th>
+      <th>Tertinggi</th>
+      <th>Terendah</th>
+      <th>Vol.</th>
+      <th>Perubahan%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>01/01/2020</td>
+      <td>0,0335</td>
+      <td>0,0328</td>
+      <td>0,0338</td>
+      <td>0,0327</td>
+      <td>250,86M</td>
+      <td>1,94%</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>02/01/2020</td>
+      <td>0,0327</td>
+      <td>0,0335</td>
+      <td>0,0335</td>
+      <td>0,0323</td>
+      <td>216,63M</td>
+      <td>-2,33%</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>03/01/2020</td>
+      <td>0,0341</td>
+      <td>0,0327</td>
+      <td>0,0344</td>
+      <td>0,0324</td>
+      <td>341,59M</td>
+      <td>4,32%</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>04/01/2020</td>
+      <td>0,0344</td>
+      <td>0,0341</td>
+      <td>0,0345</td>
+      <td>0,0337</td>
+      <td>358,20M</td>
+      <td>0,79%</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>05/01/2020</td>
+      <td>0,0346</td>
+      <td>0,0344</td>
+      <td>0,0353</td>
+      <td>0,0342</td>
+      <td>216,71M</td>
+      <td>0,73%</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1730</th>
+      <td>26/09/2024</td>
+      <td>0,4016</td>
+      <td>0,3811</td>
+      <td>0,4037</td>
+      <td>0,3782</td>
+      <td>165,03M</td>
+      <td>5,38%</td>
+    </tr>
+    <tr>
+      <th>1731</th>
+      <td>27/09/2024</td>
+      <td>0,4017</td>
+      <td>0,4016</td>
+      <td>0,4153</td>
+      <td>0,3999</td>
+      <td>148,17M</td>
+      <td>0,00%</td>
+    </tr>
+    <tr>
+      <th>1732</th>
+      <td>28/09/2024</td>
+      <td>0,4006</td>
+      <td>0,4017</td>
+      <td>0,4058</td>
+      <td>0,3924</td>
+      <td>102,69M</td>
+      <td>-0,27%</td>
+    </tr>
+    <tr>
+      <th>1733</th>
+      <td>29/09/2024</td>
+      <td>0,3976</td>
+      <td>0,4006</td>
+      <td>0,4041</td>
+      <td>0,3927</td>
+      <td>89,35M</td>
+      <td>-0,74%</td>
+    </tr>
+    <tr>
+      <th>1734</th>
+      <td>30/09/2024</td>
+      <td>0,3734</td>
+      <td>0,3976</td>
+      <td>0,3976</td>
+      <td>0,3709</td>
+      <td>143,27M</td>
+      <td>-6,07%</td>
+    </tr>
+  </tbody>
+</table>
+<p>1735 rows × 7 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="informasi-data">
+<h3>Informasi Data<a class="headerlink" href="#informasi-data" title="Link to this heading">#</a></h3>
+<p>Dari informasi yang didapat, data memiliki fitur atau kolom sebanyak 5 (jika dimulai dari 1) dan baris sebanyak 1735 (jika dimulai dari 1). dan memiliki nilai missing values sebanyak 5 pada fitur <em>Vol.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1735 entries, 0 to 1734
+Data columns (total 7 columns):
+ #   Column      Non-Null Count  Dtype 
+---  ------      --------------  ----- 
+ 0   Tanggal     1735 non-null   object
+ 1   Terakhir    1735 non-null   object
+ 2   Pembukaan   1735 non-null   object
+ 3   Tertinggi   1735 non-null   object
+ 4   Terendah    1735 non-null   object
+ 5   Vol.        1730 non-null   object
+ 6   Perubahan%  1735 non-null   object
+dtypes: object(7)
+memory usage: 95.0+ KB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tranformasi-data">
+<h3>Tranformasi Data<a class="headerlink" href="#tranformasi-data" title="Link to this heading">#</a></h3>
+<p>tranformasi data diperlukan untuk mengubah tipe data dalam dataframe karena sebelumnya semua fitur memiliki tipe data objek dan dalam proses ini diubah menyesuaikan tipe data yang sebenarnya.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Tanggal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Tanggal&#39;</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Perubahan%&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Perubahan%&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Perubahan%&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Perubahan%&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Vol.&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Vol.&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;e6&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;e9&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Terakhir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Terakhir&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pembukaan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pembukaan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Tertinggi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Tertinggi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Terendah&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Terendah&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Tanggal&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Terakhir</th>
+      <th>Pembukaan</th>
+      <th>Tertinggi</th>
+      <th>Terendah</th>
+      <th>Vol.</th>
+      <th>Perubahan%</th>
+    </tr>
+    <tr>
+      <th>Tanggal</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01</th>
+      <td>0.0335</td>
+      <td>0.0328</td>
+      <td>0.0338</td>
+      <td>0.0327</td>
+      <td>250860000.0</td>
+      <td>1.94</td>
+    </tr>
+    <tr>
+      <th>2020-01-02</th>
+      <td>0.0327</td>
+      <td>0.0335</td>
+      <td>0.0335</td>
+      <td>0.0323</td>
+      <td>216630000.0</td>
+      <td>-2.33</td>
+    </tr>
+    <tr>
+      <th>2020-01-03</th>
+      <td>0.0341</td>
+      <td>0.0327</td>
+      <td>0.0344</td>
+      <td>0.0324</td>
+      <td>341590000.0</td>
+      <td>4.32</td>
+    </tr>
+    <tr>
+      <th>2020-01-04</th>
+      <td>0.0344</td>
+      <td>0.0341</td>
+      <td>0.0345</td>
+      <td>0.0337</td>
+      <td>358200000.0</td>
+      <td>0.79</td>
+    </tr>
+    <tr>
+      <th>2020-01-05</th>
+      <td>0.0346</td>
+      <td>0.0344</td>
+      <td>0.0353</td>
+      <td>0.0342</td>
+      <td>216710000.0</td>
+      <td>0.73</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2024-09-26</th>
+      <td>0.4016</td>
+      <td>0.3811</td>
+      <td>0.4037</td>
+      <td>0.3782</td>
+      <td>165030000.0</td>
+      <td>5.38</td>
+    </tr>
+    <tr>
+      <th>2024-09-27</th>
+      <td>0.4017</td>
+      <td>0.4016</td>
+      <td>0.4153</td>
+      <td>0.3999</td>
+      <td>148170000.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>2024-09-28</th>
+      <td>0.4006</td>
+      <td>0.4017</td>
+      <td>0.4058</td>
+      <td>0.3924</td>
+      <td>102690000.0</td>
+      <td>-0.27</td>
+    </tr>
+    <tr>
+      <th>2024-09-29</th>
+      <td>0.3976</td>
+      <td>0.4006</td>
+      <td>0.4041</td>
+      <td>0.3927</td>
+      <td>89350000.0</td>
+      <td>-0.74</td>
+    </tr>
+    <tr>
+      <th>2024-09-30</th>
+      <td>0.3734</td>
+      <td>0.3976</td>
+      <td>0.3976</td>
+      <td>0.3709</td>
+      <td>143270000.0</td>
+      <td>-6.07</td>
+    </tr>
+  </tbody>
+</table>
+<p>1735 rows × 6 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+DatetimeIndex: 1735 entries, 2020-01-01 to 2024-09-30
+Data columns (total 6 columns):
+ #   Column      Non-Null Count  Dtype  
+---  ------      --------------  -----  
+ 0   Terakhir    1735 non-null   float64
+ 1   Pembukaan   1735 non-null   float64
+ 2   Tertinggi   1735 non-null   float64
+ 3   Terendah    1735 non-null   float64
+ 4   Vol.        1730 non-null   float64
+ 5   Perubahan%  1735 non-null   float64
+dtypes: float64(6)
+memory usage: 94.9 KB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="missing-values">
+<h3>Missing Values<a class="headerlink" href="#missing-values" title="Link to this heading">#</a></h3>
+<p>Dalam dataset ini memiliki 5 missing values pada fitur <em>Vol.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terakhir      0
+Pembukaan     0
+Tertinggi     0
+Terendah      0
+Vol.          5
+Perubahan%    0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="distribusi-data">
+<h3>Distribusi Data<a class="headerlink" href="#distribusi-data" title="Link to this heading">#</a></h3>
+<section id="histogram">
+<h4>Histogram<a class="headerlink" href="#histogram" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;Terakhir&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Pembukaan&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;Tertinggi&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Terendah&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;Vol.&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Perubahan%&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/661357552b48afd684efc6c13e32cea0ee7f0163c70bfbdbcbdc105f40bf5b72.png" src="_images/661357552b48afd684efc6c13e32cea0ee7f0163c70bfbdbcbdc105f40bf5b72.png" />
+</div>
+</div>
+</section>
+<section id="box-plot">
+<h4>Box Plot<a class="headerlink" href="#box-plot" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/5440c3d32b5e11ceeebe21dd239f7da03ce0e02f485c274efb2a70bee079cbe9.png" src="_images/5440c3d32b5e11ceeebe21dd239f7da03ce0e02f485c274efb2a70bee079cbe9.png" />
+</div>
+</div>
+</section>
+<section id="scatter-plot">
+<h4>Scatter Plot<a class="headerlink" href="#scatter-plot" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x7fb4780de670&gt;
+</pre></div>
+</div>
+<img alt="_images/4a64f04c17c40a0dda17244b739fcc8dc5df5af1d2301cd3b92b744d0ed5dad3.png" src="_images/4a64f04c17c40a0dda17244b739fcc8dc5df5af1d2301cd3b92b744d0ed5dad3.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="korelasi-antar-fitur">
+<h3>Korelasi Antar Fitur<a class="headerlink" href="#korelasi-antar-fitur" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            Terakhir  Pembukaan  Tertinggi  Terendah      Vol.  Perubahan%
+Terakhir    1.000000   0.996477   0.998657  0.997674  0.046679    0.012080
+Pembukaan   0.996477   1.000000   0.998114  0.996847  0.041774   -0.048996
+Tertinggi   0.998657   0.998114   1.000000  0.996172  0.062240   -0.012594
+Terendah    0.997674   0.996847   0.996172  1.000000  0.016960   -0.015539
+Vol.        0.046679   0.041774   0.062240  0.016960  1.000000    0.156626
+Perubahan%  0.012080  -0.048996  -0.012594 -0.015539  0.156626    1.000000
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/e19fef25245433a90c789432adc56a52ad5f920b30adfda595c38a506173ae17.png" src="_images/e19fef25245433a90c789432adc56a52ad5f920b30adfda595c38a506173ae17.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="data-pre-processing">
+<h2>Data Pre-Processing<a class="headerlink" href="#data-pre-processing" title="Link to this heading">#</a></h2>
+<section id="seleksi-fitur">
+<h3>Seleksi Fitur<a class="headerlink" href="#seleksi-fitur" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vol.&#39;</span><span class="p">,</span> <span class="s1">&#39;Perubahan%&#39;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">selected_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Terakhir</th>
+      <th>Pembukaan</th>
+      <th>Tertinggi</th>
+      <th>Terendah</th>
+    </tr>
+    <tr>
+      <th>Tanggal</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01</th>
+      <td>0.0335</td>
+      <td>0.0328</td>
+      <td>0.0338</td>
+      <td>0.0327</td>
+    </tr>
+    <tr>
+      <th>2020-01-02</th>
+      <td>0.0327</td>
+      <td>0.0335</td>
+      <td>0.0335</td>
+      <td>0.0323</td>
+    </tr>
+    <tr>
+      <th>2020-01-03</th>
+      <td>0.0341</td>
+      <td>0.0327</td>
+      <td>0.0344</td>
+      <td>0.0324</td>
+    </tr>
+    <tr>
+      <th>2020-01-04</th>
+      <td>0.0344</td>
+      <td>0.0341</td>
+      <td>0.0345</td>
+      <td>0.0337</td>
+    </tr>
+    <tr>
+      <th>2020-01-05</th>
+      <td>0.0346</td>
+      <td>0.0344</td>
+      <td>0.0353</td>
+      <td>0.0342</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2024-09-26</th>
+      <td>0.4016</td>
+      <td>0.3811</td>
+      <td>0.4037</td>
+      <td>0.3782</td>
+    </tr>
+    <tr>
+      <th>2024-09-27</th>
+      <td>0.4017</td>
+      <td>0.4016</td>
+      <td>0.4153</td>
+      <td>0.3999</td>
+    </tr>
+    <tr>
+      <th>2024-09-28</th>
+      <td>0.4006</td>
+      <td>0.4017</td>
+      <td>0.4058</td>
+      <td>0.3924</td>
+    </tr>
+    <tr>
+      <th>2024-09-29</th>
+      <td>0.3976</td>
+      <td>0.4006</td>
+      <td>0.4041</td>
+      <td>0.3927</td>
+    </tr>
+    <tr>
+      <th>2024-09-30</th>
+      <td>0.3734</td>
+      <td>0.3976</td>
+      <td>0.3976</td>
+      <td>0.3709</td>
+    </tr>
+  </tbody>
+</table>
+<p>1735 rows × 4 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="normalisasi-min-max">
+<h3>Normalisasi Min-Max<a class="headerlink" href="#normalisasi-min-max" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+
+<span class="n">df_scaled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">df_scaled</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Terakhir</th>
+      <th>Pembukaan</th>
+      <th>Tertinggi</th>
+      <th>Terendah</th>
+    </tr>
+    <tr>
+      <th>Tanggal</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01</th>
+      <td>0.003501</td>
+      <td>0.003263</td>
+      <td>0.002376</td>
+      <td>0.005164</td>
+    </tr>
+    <tr>
+      <th>2020-01-02</th>
+      <td>0.003229</td>
+      <td>0.003501</td>
+      <td>0.002278</td>
+      <td>0.005026</td>
+    </tr>
+    <tr>
+      <th>2020-01-03</th>
+      <td>0.003705</td>
+      <td>0.003229</td>
+      <td>0.002571</td>
+      <td>0.005060</td>
+    </tr>
+    <tr>
+      <th>2020-01-04</th>
+      <td>0.003807</td>
+      <td>0.003705</td>
+      <td>0.002604</td>
+      <td>0.005511</td>
+    </tr>
+    <tr>
+      <th>2020-01-05</th>
+      <td>0.003875</td>
+      <td>0.003807</td>
+      <td>0.002864</td>
+      <td>0.005684</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2024-09-26</th>
+      <td>0.128620</td>
+      <td>0.121648</td>
+      <td>0.122770</td>
+      <td>0.124913</td>
+    </tr>
+    <tr>
+      <th>2024-09-27</th>
+      <td>0.128654</td>
+      <td>0.128616</td>
+      <td>0.126546</td>
+      <td>0.132434</td>
+    </tr>
+    <tr>
+      <th>2024-09-28</th>
+      <td>0.128280</td>
+      <td>0.128650</td>
+      <td>0.123454</td>
+      <td>0.129835</td>
+    </tr>
+    <tr>
+      <th>2024-09-29</th>
+      <td>0.127260</td>
+      <td>0.128276</td>
+      <td>0.122901</td>
+      <td>0.129939</td>
+    </tr>
+    <tr>
+      <th>2024-09-30</th>
+      <td>0.119035</td>
+      <td>0.127256</td>
+      <td>0.120785</td>
+      <td>0.122383</td>
+    </tr>
+  </tbody>
+</table>
+<p>1735 rows × 4 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="deteksi-outlier">
+<h3>Deteksi Outlier<a class="headerlink" href="#deteksi-outlier" title="Link to this heading">#</a></h3>
+<section id="metode-local-outlier-factor-lof">
+<h4>Metode Local Outlier Factor (LOF)<a class="headerlink" href="#metode-local-outlier-factor-lof" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">LocalOutlierFactor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">contamination</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_scaled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">negative_outlier_factor_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 1  1  1 ...  1  1 -1]
+(array([  42,   43,   44,   45,   56,   71,   72,   75,   76,  148,  150,
+        182,  188,  206,  237,  238,  239,  241,  246,  248,  268,  310,
+        324,  326,  330,  357,  363,  364,  365,  366,  367,  368,  369,
+        370,  371,  372,  373,  374,  375,  376,  377,  378,  380,  381,
+        382,  385,  386,  387,  392,  393,  397,  398,  401,  402,  406,
+        411,  416,  418,  419,  420,  422,  423,  428,  433,  440,  441,
+        442,  450,  473,  475,  477,  478,  481,  490,  498,  500,  501,
+        502,  504,  505,  506,  508,  509,  515,  537,  538,  539,  590,
+        596,  598,  615,  616,  628,  630,  679,  703,  751,  752,  812,
+        854,  859,  860,  861,  862,  863,  865,  868,  880,  881,  882,
+        893,  894,  895,  896,  897,  899,  900,  929,  931,  961,  968,
+        991, 1016, 1028, 1038, 1042, 1043, 1044, 1080, 1083, 1103, 1104,
+       1125, 1135, 1140, 1141, 1142, 1166, 1175, 1185, 1253, 1255, 1256,
+       1274, 1289, 1290, 1324, 1391, 1400, 1401, 1415, 1437, 1438, 1442,
+       1463, 1468, 1470, 1525, 1536, 1539, 1563, 1564, 1565, 1566, 1570,
+       1619, 1630, 1646, 1647, 1650, 1675, 1678, 1681, 1734]),)
+[-0.9783798  -0.97262641 -0.97942414 ... -0.98528659 -0.99597446
+ -1.42683588]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="metode-box-plot-interquartile">
+<h4>Metode Box Plot (Interquartile)<a class="headerlink" href="#metode-box-plot-interquartile" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/93cbdd63608ca262c855a82d2c0ea3525868335042d4a61292022b310045d4de.png" src="_images/93cbdd63608ca262c855a82d2c0ea3525868335042d4a61292022b310045d4de.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scaled data shape: </span><span class="si">{</span><span class="n">df_scaled</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Scaled data shape: (1735, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_sequences</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_steps_in</span><span class="p">,</span> <span class="n">n_steps_out</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">n_steps_in</span> <span class="o">-</span> <span class="n">n_steps_out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">seq_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n_steps_in</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># Semua fitur</span>
+        <span class="n">seq_y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">n_steps_in</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n_steps_in</span> <span class="o">+</span> <span class="n">n_steps_out</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Target: kolom pertama (&#39;Terakhir&#39;)</span>
+        <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_x</span><span class="p">)</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_steps_in</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">6</span>  <span class="c1"># Number of lag steps</span>
+<span class="n">n_steps_out</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># Number of forecast steps</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_scaled</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Terakhir</th>
+      <th>Pembukaan</th>
+      <th>Tertinggi</th>
+      <th>Terendah</th>
+    </tr>
+    <tr>
+      <th>Tanggal</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01</th>
+      <td>0.003501</td>
+      <td>0.003263</td>
+      <td>0.002376</td>
+      <td>0.005164</td>
+    </tr>
+    <tr>
+      <th>2020-01-02</th>
+      <td>0.003229</td>
+      <td>0.003501</td>
+      <td>0.002278</td>
+      <td>0.005026</td>
+    </tr>
+    <tr>
+      <th>2020-01-03</th>
+      <td>0.003705</td>
+      <td>0.003229</td>
+      <td>0.002571</td>
+      <td>0.005060</td>
+    </tr>
+    <tr>
+      <th>2020-01-04</th>
+      <td>0.003807</td>
+      <td>0.003705</td>
+      <td>0.002604</td>
+      <td>0.005511</td>
+    </tr>
+    <tr>
+      <th>2020-01-05</th>
+      <td>0.003875</td>
+      <td>0.003807</td>
+      <td>0.002864</td>
+      <td>0.005684</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2024-09-26</th>
+      <td>0.128620</td>
+      <td>0.121648</td>
+      <td>0.122770</td>
+      <td>0.124913</td>
+    </tr>
+    <tr>
+      <th>2024-09-27</th>
+      <td>0.128654</td>
+      <td>0.128616</td>
+      <td>0.126546</td>
+      <td>0.132434</td>
+    </tr>
+    <tr>
+      <th>2024-09-28</th>
+      <td>0.128280</td>
+      <td>0.128650</td>
+      <td>0.123454</td>
+      <td>0.129835</td>
+    </tr>
+    <tr>
+      <th>2024-09-29</th>
+      <td>0.127260</td>
+      <td>0.128276</td>
+      <td>0.122901</td>
+      <td>0.129939</td>
+    </tr>
+    <tr>
+      <th>2024-09-30</th>
+      <td>0.119035</td>
+      <td>0.127256</td>
+      <td>0.120785</td>
+      <td>0.122383</td>
+    </tr>
+  </tbody>
+</table>
+<p>1735 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scaled_data</span> <span class="o">=</span> <span class="n">df_scaled</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">create_sequences</span><span class="p">(</span><span class="n">scaled_data</span><span class="p">,</span> <span class="n">n_steps_in</span><span class="p">,</span> <span class="n">n_steps_out</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">split</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">split</span><span class="p">:]</span>
+<span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:</span><span class="n">split</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">split</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="modelling">
+<h2>Modelling<a class="headerlink" href="#modelling" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">([</span>
+  <span class="n">LSTM</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">n_steps_in</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
+  <span class="n">Dense</span><span class="p">(</span><span class="n">n_steps_out</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">)</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 69ms/step - loss: 0.0790 - val_loss: 0.0026
+Epoch 2/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 75ms/step - loss: 0.0157 - val_loss: 0.0023
+Epoch 3/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 56ms/step - loss: 0.0143 - val_loss: 0.0035
+Epoch 4/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 57ms/step - loss: 0.0159 - val_loss: 0.0024
+Epoch 5/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 80ms/step - loss: 0.0143 - val_loss: 0.0021
+Epoch 6/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 100ms/step - loss: 0.0128 - val_loss: 0.0022
+Epoch 7/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 59ms/step - loss: 0.0143 - val_loss: 0.0031
+Epoch 8/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 51ms/step - loss: 0.0143 - val_loss: 0.0020
+Epoch 9/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 60ms/step - loss: 0.0141 - val_loss: 0.0019
+Epoch 10/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 72ms/step - loss: 0.0137 - val_loss: 0.0020
+Epoch 11/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 98ms/step - loss: 0.0130 - val_loss: 0.0019
+Epoch 12/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 77ms/step - loss: 0.0135 - val_loss: 0.0018
+Epoch 13/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 72ms/step - loss: 0.0126 - val_loss: 0.0021
+Epoch 14/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 96ms/step - loss: 0.0121 - val_loss: 0.0019
+Epoch 15/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 85ms/step - loss: 0.0132 - val_loss: 0.0019
+Epoch 16/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 62ms/step - loss: 0.0098 - val_loss: 0.0015
+Epoch 17/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 65ms/step - loss: 0.0080 - val_loss: 0.0019
+Epoch 18/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 60ms/step - loss: 0.0131 - val_loss: 0.0043
+Epoch 19/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 67ms/step - loss: 0.0155 - val_loss: 0.0023
+Epoch 20/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">5s</span> 122ms/step - loss: 0.0133 - val_loss: 0.0024
+Epoch 21/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">5s</span> 139ms/step - loss: 0.0142 - val_loss: 0.0020
+Epoch 22/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">5s</span> 130ms/step - loss: 0.0133 - val_loss: 0.0020
+Epoch 23/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">5s</span> 118ms/step - loss: 0.0132 - val_loss: 0.0020
+Epoch 24/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">5s</span> 122ms/step - loss: 0.0133 - val_loss: 0.0017
+Epoch 25/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 112ms/step - loss: 0.0128 - val_loss: 0.0016
+Epoch 26/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 103ms/step - loss: 0.0122 - val_loss: 0.0016
+Epoch 27/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 121ms/step - loss: 0.0131 - val_loss: 0.0014
+Epoch 28/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 105ms/step - loss: 0.0121 - val_loss: 0.0018
+Epoch 29/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 72ms/step - loss: 0.0123 - val_loss: 0.0018
+Epoch 30/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 90ms/step - loss: 0.0120 - val_loss: 0.0015
+Epoch 31/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 70ms/step - loss: 0.0114 - val_loss: 0.0018
+Epoch 32/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 56ms/step - loss: 0.0100 - val_loss: 0.0022
+Epoch 33/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 69ms/step - loss: 0.0105 - val_loss: 0.0025
+Epoch 34/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 67ms/step - loss: 0.0097 - val_loss: 0.0021
+Epoch 35/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 63ms/step - loss: 0.0090 - val_loss: 0.0020
+Epoch 36/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 66ms/step - loss: 0.0097 - val_loss: 0.0030
+Epoch 37/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 54ms/step - loss: 0.0087 - val_loss: 0.0058
+Epoch 38/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 108ms/step - loss: 0.0088 - val_loss: 0.0049
+Epoch 39/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 101ms/step - loss: 0.0082 - val_loss: 0.0024
+Epoch 40/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 89ms/step - loss: 0.0097 - val_loss: 0.0019
+Epoch 41/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 67ms/step - loss: 0.0078 - val_loss: 0.0017
+Epoch 42/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 58ms/step - loss: 0.0070 - val_loss: 0.0014
+Epoch 43/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 67ms/step - loss: 0.0065 - val_loss: 0.0015
+Epoch 44/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 67ms/step - loss: 0.0058 - val_loss: 0.0017
+Epoch 45/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 115ms/step - loss: 0.0051 - val_loss: 0.0021
+Epoch 46/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">5s</span> 122ms/step - loss: 0.0081 - val_loss: 0.0019
+Epoch 47/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 98ms/step - loss: 0.0050 - val_loss: 0.0015
+Epoch 48/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 89ms/step - loss: 0.0045 - val_loss: 0.0018
+Epoch 49/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">4s</span> 116ms/step - loss: 0.0047 - val_loss: 0.0017
+Epoch 50/50
+<span class=" -Color -Color-Bold">37/37</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">3s</span> 86ms/step - loss: 0.0038 - val_loss: 0.0018
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve loss and validation loss from the history object</span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
+<span class="n">val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plot the loss values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training and Validation Loss over Epochs&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/9fe7febf6fe975e574986e9fe5e7a0ddf7a63e541e9d764240ee2b02c6625c09.png" src="_images/9fe7febf6fe975e574986e9fe5e7a0ddf7a63e541e9d764240ee2b02c6625c09.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forecast the next steps</span>
+<span class="n">last_sequence</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_steps_in</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># Use the last test sequence</span>
+<span class="n">predicted_steps</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">last_sequence</span><span class="p">)</span>  <span class="c1"># Shape: (1, n_steps_out)</span>
+
+<span class="c1"># Prepare for inverse transform</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="n">scaled_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">predicted_steps_expanded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps_out</span><span class="p">,</span> <span class="n">n_features</span><span class="p">))</span>  <span class="c1"># Create zero array</span>
+<span class="n">predicted_steps_expanded</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted_steps</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># Place predictions in target column</span>
+
+<span class="n">predicted_steps_rescaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">predicted_steps_expanded</span><span class="p">)</span>
+
+<span class="n">predicted_steps_final</span> <span class="o">=</span> <span class="n">predicted_steps_rescaled</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Take only the target column</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted next </span><span class="si">{</span><span class="n">n_steps_out</span><span class="si">}</span><span class="s2"> steps for &#39;Terakhir&#39;: </span><span class="si">{</span><span class="n">predicted_steps_rescaled</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">1/1</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">0s</span> 246ms/step
+Predicted next 90 steps for &#39;Terakhir&#39;: [[0.43612311 0.0232     0.0265     0.0178    ]
+ [0.40423916 0.0232     0.0265     0.0178    ]
+ [0.41983579 0.0232     0.0265     0.0178    ]
+ [0.40839305 0.0232     0.0265     0.0178    ]
+ [0.38056745 0.0232     0.0265     0.0178    ]
+ [0.40125016 0.0232     0.0265     0.0178    ]
+ [0.39738656 0.0232     0.0265     0.0178    ]
+ [0.40271851 0.0232     0.0265     0.0178    ]
+ [0.40869103 0.0232     0.0265     0.0178    ]
+ [0.38752563 0.0232     0.0265     0.0178    ]
+ [0.40334405 0.0232     0.0265     0.0178    ]
+ [0.35379688 0.0232     0.0265     0.0178    ]
+ [0.39112194 0.0232     0.0265     0.0178    ]
+ [0.37801068 0.0232     0.0265     0.0178    ]
+ [0.38151001 0.0232     0.0265     0.0178    ]
+ [0.38960916 0.0232     0.0265     0.0178    ]
+ [0.39321364 0.0232     0.0265     0.0178    ]
+ [0.39118441 0.0232     0.0265     0.0178    ]
+ [0.39315068 0.0232     0.0265     0.0178    ]
+ [0.36543974 0.0232     0.0265     0.0178    ]
+ [0.3848606  0.0232     0.0265     0.0178    ]
+ [0.37655307 0.0232     0.0265     0.0178    ]
+ [0.38746903 0.0232     0.0265     0.0178    ]
+ [0.39589318 0.0232     0.0265     0.0178    ]
+ [0.40547323 0.0232     0.0265     0.0178    ]
+ [0.37944582 0.0232     0.0265     0.0178    ]
+ [0.38802439 0.0232     0.0265     0.0178    ]
+ [0.38523091 0.0232     0.0265     0.0178    ]
+ [0.38741595 0.0232     0.0265     0.0178    ]
+ [0.38589291 0.0232     0.0265     0.0178    ]
+ [0.39677325 0.0232     0.0265     0.0178    ]
+ [0.39725105 0.0232     0.0265     0.0178    ]
+ [0.40537709 0.0232     0.0265     0.0178    ]
+ [0.41228659 0.0232     0.0265     0.0178    ]
+ [0.39479803 0.0232     0.0265     0.0178    ]
+ [0.38706839 0.0232     0.0265     0.0178    ]
+ [0.3804755  0.0232     0.0265     0.0178    ]
+ [0.36575332 0.0232     0.0265     0.0178    ]
+ [0.3663281  0.0232     0.0265     0.0178    ]
+ [0.35234067 0.0232     0.0265     0.0178    ]
+ [0.37876191 0.0232     0.0265     0.0178    ]
+ [0.3783389  0.0232     0.0265     0.0178    ]
+ [0.38821073 0.0232     0.0265     0.0178    ]
+ [0.34878386 0.0232     0.0265     0.0178    ]
+ [0.34884327 0.0232     0.0265     0.0178    ]
+ [0.36624647 0.0232     0.0265     0.0178    ]
+ [0.34998317 0.0232     0.0265     0.0178    ]
+ [0.37932323 0.0232     0.0265     0.0178    ]
+ [0.35381336 0.0232     0.0265     0.0178    ]
+ [0.33592716 0.0232     0.0265     0.0178    ]
+ [0.35409064 0.0232     0.0265     0.0178    ]
+ [0.3501301  0.0232     0.0265     0.0178    ]
+ [0.3260741  0.0232     0.0265     0.0178    ]
+ [0.32335175 0.0232     0.0265     0.0178    ]
+ [0.35616341 0.0232     0.0265     0.0178    ]
+ [0.31273952 0.0232     0.0265     0.0178    ]
+ [0.33382364 0.0232     0.0265     0.0178    ]
+ [0.34297725 0.0232     0.0265     0.0178    ]
+ [0.34082941 0.0232     0.0265     0.0178    ]
+ [0.30795581 0.0232     0.0265     0.0178    ]
+ [0.32537164 0.0232     0.0265     0.0178    ]
+ [0.33428843 0.0232     0.0265     0.0178    ]
+ [0.31155674 0.0232     0.0265     0.0178    ]
+ [0.33236761 0.0232     0.0265     0.0178    ]
+ [0.33195434 0.0232     0.0265     0.0178    ]
+ [0.31490921 0.0232     0.0265     0.0178    ]
+ [0.32413857 0.0232     0.0265     0.0178    ]
+ [0.30421179 0.0232     0.0265     0.0178    ]
+ [0.31305078 0.0232     0.0265     0.0178    ]
+ [0.32201875 0.0232     0.0265     0.0178    ]
+ [0.3146713  0.0232     0.0265     0.0178    ]
+ [0.31256864 0.0232     0.0265     0.0178    ]
+ [0.31168962 0.0232     0.0265     0.0178    ]
+ [0.30977963 0.0232     0.0265     0.0178    ]
+ [0.28762724 0.0232     0.0265     0.0178    ]
+ [0.28755766 0.0232     0.0265     0.0178    ]
+ [0.27431868 0.0232     0.0265     0.0178    ]
+ [0.28334864 0.0232     0.0265     0.0178    ]
+ [0.30148597 0.0232     0.0265     0.0178    ]
+ [0.29091242 0.0232     0.0265     0.0178    ]
+ [0.2887418  0.0232     0.0265     0.0178    ]
+ [0.31260875 0.0232     0.0265     0.0178    ]
+ [0.32496768 0.0232     0.0265     0.0178    ]
+ [0.28598747 0.0232     0.0265     0.0178    ]
+ [0.31255303 0.0232     0.0265     0.0178    ]
+ [0.29033806 0.0232     0.0265     0.0178    ]
+ [0.29952842 0.0232     0.0265     0.0178    ]
+ [0.30283339 0.0232     0.0265     0.0178    ]
+ [0.28459619 0.0232     0.0265     0.0178    ]
+ [0.34242922 0.0232     0.0265     0.0178    ]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the actual &#39;Terakhir&#39; data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Terakhir&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Actual Terakhir&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the predicted data</span>
+<span class="n">predicted_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">periods</span><span class="o">=</span><span class="n">n_steps_out</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">predicted_dates</span><span class="p">,</span> <span class="n">predicted_steps_final</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Predicted Terakhir&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Terakhir&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Actual vs Predicted Terakhir&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b51be6829871e90356ada8bcada44d4b08be1d7f33f234fb6402da0817662e1a.png" src="_images/b51be6829871e90356ada8bcada44d4b08be1d7f33f234fb6402da0817662e1a.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="harga-saham-multivariate.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Proyek 2 : Prediksi Harga Saham BCA (BBCA) debngan Multivariate</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pendahuluan">Pendahuluan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang">Latar Belakang</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan">Tujuan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rumusan-masalah">Rumusan Masalah</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-library">Import Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-exsploratory-data-analysis">EDA (Exsploratory Data Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#informasi-data">Informasi Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tranformasi-data">Tranformasi Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribusi-data">Distribusi Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#histogram">Histogram</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#box-plot">Box Plot</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatter-plot">Scatter Plot</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antar-fitur">Korelasi Antar Fitur</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pre-processing">Data Pre-Processing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleksi-fitur">Seleksi Fitur</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalisasi-min-max">Normalisasi Min-Max</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier">Deteksi Outlier</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#metode-local-outlier-factor-lof">Metode Local Outlier Factor (LOF)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#metode-box-plot-interquartile">Metode Box Plot (Interquartile)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Wahyu Cahyanto Bayu Agung
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
